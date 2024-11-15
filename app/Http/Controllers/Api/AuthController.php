@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([    
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
@@ -62,6 +62,9 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        $userData = $request->user()->toArray(); // Convert user data to array
+        $userData['type'] = 'user'; // Add 'type' field
+
+        return response()->json($userData);
     }
 }
