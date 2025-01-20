@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Abstracts\Http\ApiController;
 use App\Http\Requests\TodoRequest;
 use App\Http\Resources\TodoResource;
 use App\Jobs\CreateTodo;
@@ -12,7 +12,7 @@ use App\Models\Todo;
 use App\Traits\Jobs;
 use Illuminate\Http\Request;
 
-class TodoController extends Controller
+class TodoController extends ApiController
 {
 
     use Jobs;
@@ -39,7 +39,7 @@ class TodoController extends Controller
     {
         $todo = $this->dispatch(new CreateTodo($request));
 
-        return response()->json($todo, 201);
+        return $this->created(route('api.todos.show', $todo->id), new TodoResource($todo));
     }
 
     /**
@@ -48,6 +48,10 @@ class TodoController extends Controller
     public function show($id)
     {
         $todo = Todo::find($id);
+
+        if (! $todo instanceof Todo) {
+            return $this->errorInternal('No query results for model [' . Todo::class . '] ' . $id);
+        }
 
         return new TodoResource($todo);
     }
@@ -68,8 +72,11 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        $this->dispatch(new DeleteTodo($todo));
-
-        return response()->noContent();
+        try {
+            $this->dispatch(new DeleteTodo($todo));
+            return $this->noContent();
+        } catch (\Exception $e) {
+            $this->errorUnauthorized($e->getMessage());
+        }
     }
 }

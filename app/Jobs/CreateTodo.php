@@ -13,7 +13,6 @@ class CreateTodo extends Job implements ShouldCreate
     {
         \DB::transaction(function () {
 
-            $this->request['user_id'] = auth()->check() ? auth()->id() : null;
             $this->model = Todo::create($this->request->all());
         });
 
