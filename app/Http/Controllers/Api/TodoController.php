@@ -22,11 +22,11 @@ class TodoController extends ApiController
      *      
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $userId = auth()->check() ? auth()->id() : null;
 
-        $todos = Todo::where('user_id', $userId)->paginate(5);
+        $todos = Todo::where('user_id', $userId)->applyFilters($request->all())->paginate(5);
 
         return TodoResource::collection($todos);
     }
