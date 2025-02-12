@@ -1,4 +1,4 @@
-@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
+@extends('auth.auth-page', ['auth_type' => 'login'])
 
 @section('adminlte_css_pre')
     <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -21,7 +21,8 @@
 @section('auth_header', __('adminlte::adminlte.login_message'))
 
 @section('auth_body')
-    <form action="{{ $login_url }}" method="post">
+
+    <form id="login-form" action="{{ $login_url }}" method="post">
         @csrf
 
         {{-- Email field --}}
@@ -35,11 +36,7 @@
                 </div>
             </div>
 
-            @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
+          
         </div>
 
         {{-- Password field --}}
@@ -53,11 +50,6 @@
                 </div>
             </div>
 
-            @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
         </div>
 
         {{-- Login field --}}
@@ -73,7 +65,7 @@
             </div>
 
             <div class="col-5">
-                <button type=submit class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
+                <button id="login-submit-btn" type=submit class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
                     <span class="fas fa-sign-in-alt"></span>
                     {{ __('adminlte::adminlte.sign_in') }}
                 </button>
@@ -102,3 +94,47 @@
         </p>
     @endif
 @stop
+
+@push('js')
+<script>
+    $(document).ready(function () {
+        $('#login-submit-btn').on('click', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            let form = $('#login-form'); // Get the form
+            let actionUrl = form.attr('action'); // Get form action URL
+            let formData = form.serialize(); // Serialize form data
+
+            // Clear previous error messages
+            $('#error-alert').hide().html('');
+
+            // Make the AJAX request
+            $.ajax({
+                url: actionUrl,
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        // Redirect if login is successful
+                        window.location.href = response.redirect || '{{ url('/home') }}';
+                    } else {
+                        // Show error message
+                        $('#error-alert').html(response.message || 'Login failed.').show();
+                    }
+                },
+                error: function (xhr) {
+                    // Handle validation or server errors
+                    let errors = xhr.responseJSON.errors || {};
+                    let errorMessage = 'An error occurred.';
+
+                    if (xhr.status === 422) { // Validation error
+                        errorMessage = Object.values(errors).join('<br>');
+                    }
+
+                    $('#error-alert').html(errorMessage).show();
+                }
+            });
+        });
+    });
+</script>
+@endpush

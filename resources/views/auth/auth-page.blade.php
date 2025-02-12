@@ -26,33 +26,36 @@
 @section('body')
     <div class="{{ $auth_type ?? 'login' }}-box">
 
+        
         {{-- Logo --}}
         <div class="{{ $auth_type ?? 'login' }}-logo">
             <a href="{{ $dashboard_url }}">
-
+                
                 {{-- Logo Image --}}
                 @if (config('adminlte.auth_logo.enabled', false))
-                    <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
+                <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
                          alt="{{ config('adminlte.auth_logo.img.alt') }}"
                          @if (config('adminlte.auth_logo.img.class', null))
                             class="{{ config('adminlte.auth_logo.img.class') }}"
-                         @endif
-                         @if (config('adminlte.auth_logo.img.width', null))
+                            @endif
+                            @if (config('adminlte.auth_logo.img.width', null))
                             width="{{ config('adminlte.auth_logo.img.width') }}"
-                         @endif
-                         @if (config('adminlte.auth_logo.img.height', null))
+                            @endif
+                            @if (config('adminlte.auth_logo.img.height', null))
                             height="{{ config('adminlte.auth_logo.img.height') }}"
-                         @endif>
+                            @endif>
                 @else
                     <img src="{{ asset(config('adminlte.logo_img')) }}"
                          alt="{{ config('adminlte.logo_img_alt') }}" height="50">
-                @endif
-
-                {{-- Logo Label --}}
-                {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
-
-            </a>
-        </div>
+                         @endif
+                         
+                         {{-- Logo Label --}}
+                         {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                         
+                        </a>
+                    </div>
+                    
+        <div id="error-alert" class="alert alert-danger mt-3" style="display: none;"></div>
 
         {{-- Card Box --}}
         <div class="card {{ config('adminlte.classes_auth_card', 'card-outline card-primary') }}">
