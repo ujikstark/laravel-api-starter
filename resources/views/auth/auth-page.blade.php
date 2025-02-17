@@ -1,4 +1,4 @@
-@extends('adminlte::master')
+@extends('adminlte.master')
 
 @php
     $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home');
@@ -24,7 +24,7 @@
 @section('classes_body'){{ $bodyClasses }}@stop
 
 @section('body')
-    <div class="{{ $auth_type ?? 'login' }}-box">
+    <div class="{{ $auth_type ?? 'login' }}-box" id="app">
 
         
         {{-- Logo --}}

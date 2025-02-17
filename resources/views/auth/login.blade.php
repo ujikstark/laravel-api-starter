@@ -73,6 +73,8 @@
         </div>
 
     </form>
+
+    <example-component></example-component>
 @stop
 
 @section('auth_footer')
@@ -96,6 +98,7 @@
 @stop
 
 @push('js')
+<script src="{{asset('js/app.js')}}"></script>
 <script>
     $(document).ready(function () {
         $('#login-submit-btn').on('click', function (e) {
