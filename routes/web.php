@@ -32,3 +32,7 @@ Route::get('email/resend',  [VerificationController::class, 'resend'])->name('ve
 
 // Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
