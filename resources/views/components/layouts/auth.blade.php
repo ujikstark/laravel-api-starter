@@ -22,6 +22,8 @@
 
         @stack('body_end')
 
+        <x-layouts.auth.scripts />
+
     </body>
 
 </html>
