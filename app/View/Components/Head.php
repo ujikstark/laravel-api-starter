@@ -21,6 +21,6 @@ class Head extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.auth.head');
+        return view('components.layouts.authhead');
     }
 }
