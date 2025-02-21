@@ -29,14 +29,3 @@ Route::post('password/confirm', [ConfirmPasswordController::class, 'confirm']);
 Route::get('email/verify', [VerificationController::class, 'show'])->name('verification.notice');
 Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::get('email/resend',  [VerificationController::class, 'resend'])->name('verification.resend');
-
-// Home
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

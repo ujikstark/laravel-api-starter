@@ -2,10 +2,10 @@
 
 namespace App\View\Components;
 
+use App\Abstracts\View\Components\Form as BaseForm;
 use Illuminate\Support\Str;
-use Illuminate\View\Component;
 
-class Form extends Component
+class Form extends BaseForm
 {
     /** @var string */
     public $method;

@@ -1,21 +1,25 @@
 require('./../../bootstrap');
 
-import { createApp } from "vue";
+import { createApp, ref, onMounted } from "vue";
 import Form from "./../../plugins/form";
 
 const app = createApp({
-    data() {
-        return {
-            form: new Form("auth"),
+    setup() {
+        const form = ref({});
+
+        onMounted(() => {
+            form.value = new Form("auth");
+        });
+
+        const onSubmit = () => {
+
+            if (form.value) {
+                form.value.submit();
+            }
         };
-    },
 
-    methods: {
-        onSubmit() {
-            this.form.submit();
-        },
+        return { form, onSubmit };
     },
-
 });
 
 app.mount("#app");
